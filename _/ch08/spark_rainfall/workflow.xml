@@ -1,0 +1,27 @@
+<workflow-app name="ch08_spark_max_rainfall" xmlns="uri:oozie:workflow:0.5">
+  
+    <start to="max_rainfall"/>
+    
+    <action name="max_rainfall">
+        <spark xmlns="uri:oozie:spark-action:0.1">
+          <job-tracker>${jobTracker}</job-tracker>
+          <name-node>${nameNode}</name-node>
+          <master>"yarn-cluster"</master>
+          <mode>cluster</mode>
+          <name>"Spark Ch08 Max Rain Calculator"</name>
+          <class>life.jugnu.learnoozie.ch08.MaxRainfall</class>
+          <jar>/user/hue/learn_oozie/ch08/rainbow/target/rainbow-1.0.0-jar-with-dependencies.jar</jar>
+          <spark-opts>--conf spark.yarn.historyServer.address=http://sandbox.hortonworks.com:18088 --conf spark.eventLog.dir=hdfs://sandbox.hortonworks.com:8020/user/spark/applicationHistory --conf spark.eventLog.enabled=true</spark-opts>
+          <arg>${input}</arg>
+          <arg>${output}</arg>
+        </spark>
+      <ok to="End"/>
+      <error to="Kill"/>
+    </action>
+    
+    <kill name="Kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    
+    <end name="End"/>
+</workflow-app>

@@ -1,0 +1,33 @@
+<coordinator-app name="max_rainfall_scheduler_v2" frequency="${frequency}"
+                 start="${start_date}" end="${end_date}" timezone="Australia/Sydney"
+                 xmlns="uri:oozie:coordinator:0.4">
+  <datasets>
+        <include>${data_definitions}</include>
+  </datasets>
+  <input-events>
+    <data-in name="wf_input" dataset="rainfall">
+      <instance>${coord:current(0)}</instance>
+    </data-in>
+  </input-events>
+  <output-events>
+    <data-out name="wf_output" dataset="max_rainfall">
+      <instance>${coord:current(0)}</instance>
+    </data-out>
+  </output-events>
+
+  <action>
+    <workflow>
+      <app-path>${wf_application_path}</app-path>
+      <configuration>
+        <property>
+          <name>input</name>
+          <value>${coord:dataIn('wf_input')}</value>
+        </property>
+        <property>
+          <name>output</name>
+          <value>${coord:dataOut('wf_output')}</value>
+        </property>
+      </configuration>
+   </workflow>
+  </action>
+</coordinator-app>

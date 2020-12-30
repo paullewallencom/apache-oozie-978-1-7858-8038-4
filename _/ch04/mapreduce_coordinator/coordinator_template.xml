@@ -1,0 +1,23 @@
+<coordinator>
+  <parameters></parameters>
+  <controls>
+    <timeout></timeout>
+    <concurency></concurency>
+    <execution></execution>
+    <throttle></throttle>
+  </controls>
+  <datasets>
+    <include></include>
+    <dataset></dataset>
+  </datasets>
+  <input-events>
+    <data-in></data-in>
+  </input-events>
+  <output-events>
+    <data-out></data-out>
+  </output-events>
+  <action>
+    <workflow></workflow>
+    <sla></sla>
+  </action>
+</coordinator>

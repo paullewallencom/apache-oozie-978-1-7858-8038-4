@@ -1,0 +1,48 @@
+<coordinator-app name="ch07_max_rainfall_scheduler_v1" frequency="${frequency}"
+                 start="${start_date}" end="${end_date}" timezone="Australia/Sydney"
+                 xmlns="uri:oozie:coordinator:0.4">
+  <controls>
+    <timeout>${timeout}</timeout>
+    <concurrency>${concurrency_level}</concurrency>
+    <execution>${execution_order}</execution>
+    <throttle>${materialization_throttle}</throttle>
+  </controls>
+  
+  <datasets>
+        <include>${data_definitions}</include>
+  </datasets>
+  
+  <output-events>
+    <data-out name="wf_output" dataset="rainfall_partitioned">
+      <instance>${coord:current(0)}</instance>
+    </data-out>
+  </output-events>
+
+  <action>
+    <workflow>
+      <app-path>${wf_application_path}</app-path>
+      <configuration>
+        <property>
+          <name>year</name>
+          <value>${coord:formatTime(coord:nominalTime(),"yyyy")}</value>
+        </property>
+        <property>
+          <name>month</name>
+          <value>${coord:formatTime(coord:nominalTime(),"MM")}</value>
+        </property>
+        <property>
+          <name>pig_output_db</name>
+          <value>${coord:databaseOut('wf_output')}</value>
+        </property>
+        <property>
+          <name>pig_output_table</name>
+          <value>${coord:tableOut('wf_output')}</value>
+        </property>
+        <property>
+          <name>yearmonth</name>
+          <value>${coord:dataOutPartitionValue('wf_output','yearmonth')}</value>
+        </property>
+      </configuration>
+   </workflow>
+  </action>
+</coordinator-app>

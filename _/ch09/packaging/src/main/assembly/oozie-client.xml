@@ -1,0 +1,22 @@
+<assembly>
+    <id>client</id>
+    <formats>
+        <format>dir</format>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <fileSets>
+        <fileSet>
+            <directory>${basedir}/src/main/client</directory>
+            <outputDirectory>client/client-${project.version}</outputDirectory>
+        </fileSet>
+    </fileSets>
+    <files>
+        <file>
+            <source>target/classes/VERSION.txt</source>
+            <outputDirectory>client/client-${project.version}</outputDirectory>
+        </file>
+    </files>
+
+</assembly>

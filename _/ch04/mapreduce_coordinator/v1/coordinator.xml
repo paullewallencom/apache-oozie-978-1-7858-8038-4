@@ -1,0 +1,7 @@
+<coordinator-app name="My_First_Coordinator_v1" frequency="${frequency}" start="${start_date}" end="${end_date}" timezone="Australia/Sydney" xmlns="uri:oozie:coordinator:0.4">
+  <action>
+    <workflow>
+      <app-path>${wf_application_path}</app-path>
+   </workflow>
+  </action>
+</coordinator-app>

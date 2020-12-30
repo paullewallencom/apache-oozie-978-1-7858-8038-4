@@ -1,0 +1,52 @@
+<workflow-app name="max_rainfall_ch07_v1" xmlns="uri:oozie:workflow:0.5">
+  
+  <global>
+    <job-tracker>${jobTracker}</job-tracker>
+    <name-node>${nameNode}</name-node>
+  </global>
+  
+  <start to="sqoop_import"/>
+  
+  <action name="sqoop_import">
+    <sqoop xmlns="uri:oozie:sqoop-action:0.4">
+      <prepare>
+        <delete path="${pig_base_input}/${year}/${month}"/>
+      </prepare>
+      <arg>import</arg>
+      <arg>--connect</arg>
+      <arg>jdbc:mysql://${mysqlurl}</arg>
+      <arg>--username</arg>
+      <arg>root</arg>
+      <arg>--password</arg>
+      <arg>""</arg>
+      <arg>--query</arg>
+      <arg>${query}</arg>
+      <arg>--target-dir</arg>
+      <arg>${pig_base_input}/${year}/${month}</arg>
+      <arg>-m</arg>
+      <arg>1</arg>
+      <arg>--direct</arg>
+    </sqoop>
+    <ok to="max_rainfall"/>
+      <error to="Kill"/>
+  </action>
+    
+  <action name="max_rainfall">
+    <pig>
+      <script>${pig_script}</script>
+      <param>pig_input=${pig_base_input}/${year}/${month}</param>
+      <param>pig_output_db=${pig_output_db}</param>
+      <param>pig_output_table=${pig_output_table}</param>
+      <param>yearmonth=${yearmonth}</param>
+      <file>${hive_site}</file>
+    </pig>
+    <ok to="End"/>
+    <error to="Kill"/>
+  </action>
+    
+  <kill name="Kill">
+    <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+  </kill>
+    
+  <end name="End"/>
+</workflow-app>

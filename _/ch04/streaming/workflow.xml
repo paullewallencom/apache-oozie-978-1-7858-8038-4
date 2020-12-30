@@ -1,0 +1,31 @@
+<workflow-app name="Mapreduce_Streaming_example" xmlns="uri:oozie:workflow:0.5">
+    <start to="streaming-c097"/>
+    <kill name="Kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <action name="streaming-c097">
+        <map-reduce>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <streaming>
+                <mapper>mapper.py</mapper>
+                <reducer>reducer.py</reducer>
+            </streaming>
+            <configuration>
+                <property>
+                    <name>mapreduce.input.fileinputformat.inputdir</name>
+                    <value>${input}</value>
+                </property>
+                <property>
+                    <name>mapreduce.output.fileoutputformat.outputdir</name>
+                    <value>${output}</value>
+                </property>
+            </configuration>
+            <file>/user/hue/learn_oozie/ch04/streaming/mapper.py#mapper.py</file>
+            <file>/user/hue/learn_oozie/ch04/streaming/reducer.py#reducer.py</file>
+        </map-reduce>
+        <ok to="End"/>
+        <error to="Kill"/>
+    </action>
+    <end name="End"/>
+</workflow-app>

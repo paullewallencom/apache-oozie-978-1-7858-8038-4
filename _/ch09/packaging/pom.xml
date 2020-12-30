@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>life.jugnu.learnoozie</groupId>
+    <artifactId>ch09</artifactId>
+    <version>1.0.0</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>2.7.1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/shell</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.txt</include>
+                    <include>**/*.sh</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>rpm-maven-plugin</artifactId>
+                    <version>2.1.4</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.5.5</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/oozie-hdfs.xml</descriptor>
+                        <descriptor>src/main/assembly/oozie-client.xml</descriptor>
+                        <descriptor>src/main/assembly/oozie-deploy.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>rpm-maven-plugin</artifactId>
+                <version>2.1.4</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <id>attach-rpm</id>
+                        <goals>
+                            <goal>attached-rpm</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <name>oozie-essentials</name>
+                    <distribution>Apache Oozie Essentials 2015</distribution>
+                    <group>Hadoop/Oozie</group>
+                    <packager>Jagat Jasjit Singh</packager>
+                    <prefix>/usr/local</prefix>
+                    <defineStatements>
+                        <defineStatement>_unpackaged_files_terminate_build 0</defineStatement>
+                    </defineStatements>
+                    <mappings>
+                        <mapping>
+                            <directory>/tmp/install/oozie/client</directory>
+                            <filemode>755</filemode>
+                            <username>oozie</username>
+                            <groupname>oozie</groupname>
+                            <sources>
+                                <source>
+                                    <location>target/${project.name}-${project.version}-client/client</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/tmp/install/oozie/hdfs</directory>
+                            <filemode>755</filemode>
+                            <username>oozie</username>
+                            <groupname>oozie</groupname>
+                            <sources>
+                                <source>
+                                    <location>target/${project.name}-${project.version}-hdfs/hdfs</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/tmp/install/oozie/deploy</directory>
+                            <filemode>755</filemode>
+                            <username>oozie</username>
+                            <groupname>oozie</groupname>
+                            <sources>
+                                <source>
+                                    <location>target/${project.name}-${project.version}-deploy/deploy</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                    </mappings>
+                    <preinstallScriptlet>
+                        <scriptFile>target/classes/rpm_prepareinstall.sh</scriptFile>
+                    </preinstallScriptlet>
+                    <postinstallScriptlet>
+                        <scriptFile>target/classes/rpm_install.sh</scriptFile>
+                    </postinstallScriptlet>
+                    <verifyScriptlet>
+                        <scriptFile>target/classes/rpm_verify.sh</scriptFile>
+                    </verifyScriptlet>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

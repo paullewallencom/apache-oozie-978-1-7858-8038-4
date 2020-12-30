@@ -1,0 +1,38 @@
+<workflow-app name="max_rainfall_ch06_v3" xmlns="uri:oozie:workflow:0.5">
+
+      <credentials>
+         <credential name='hcat-creds' type='hcat'>
+            <property>
+               <name>hcat.metastore.uri</name>
+               <value>HCAT_URI</value>
+            </property>
+            <property>
+               <name>hcat.metastore.principal</name>
+               <value>HCAT_PRINCIPAL</value>
+            </property>
+         </credential>
+      </credentials>
+  
+    <start to="max_rainfall"/>
+    
+    <action name="max_rainfall" cred='hcat-creds'>
+        <pig>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+              <script>${pig_script}</script>
+              <param>pig_input=${pig_input}</param>
+              <param>pig_output_db=${pig_output_db}</param>
+              <param>pig_output_table=${pig_output_table}</param>
+              <param>yearmonth=${yearmonth}</param>
+              <file>${hive_site}</file>
+        </pig>
+        <ok to="End"/>
+        <error to="Kill"/>
+    </action>
+    
+    <kill name="Kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    
+    <end name="End"/>
+</workflow-app>

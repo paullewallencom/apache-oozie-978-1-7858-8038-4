@@ -1,0 +1,10 @@
+<datasets>
+  <dataset name="rainfall" frequency="${coord:months(1)}" initial-instance="2015-01-01T00:00Z" timezone="Australia/Sydney">
+    <uri-template>${nameNode}/user/hue/learn_oozie/ch05/input/rainfall/${YEAR}/${MONTH}/</uri-template>
+    <done-flag>_SUCCESS</done-flag>
+  </dataset>
+  <dataset name="max_rainfall" frequency="${coord:months(1)}" initial-instance="2015-01-01T00:00Z" timezone="Australia/Sydney">
+    <uri-template>${nameNode}/user/hue/learn_oozie/ch05/processed/max_rainfall/${YEAR}/${MONTH}/</uri-template>
+    <done-flag>_SUCCESS</done-flag>
+  </dataset>
+</datasets>

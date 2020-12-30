@@ -1,0 +1,33 @@
+<assembly>
+    <id>deploy</id>
+    <formats>
+        <format>dir</format>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <fileSets>
+        <fileSet>
+            <directory>target/classes</directory>
+            <outputDirectory>deploy/deploy-${project.version}</outputDirectory>
+            <includes>
+                <include>*.sh</include>
+                <include>*.txt</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}</directory>
+            <outputDirectory>deploy/deploy-${project.version}</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+    <files>
+        <file>
+            <source>target/classes/VERSION.txt</source>
+            <outputDirectory>deploy/deploy-${project.version}</outputDirectory>
+        </file>
+    </files>
+
+</assembly>

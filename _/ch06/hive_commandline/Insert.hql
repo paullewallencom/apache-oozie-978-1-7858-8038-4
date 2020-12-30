@@ -1,0 +1,1 @@
+LOAD DATA INPATH '/user/hue/learn_oozie/ch06/hive_commandline/input' INTO TABLE CH06_RAINFALL_TREND;

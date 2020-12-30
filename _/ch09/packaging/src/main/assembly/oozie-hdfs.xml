@@ -1,0 +1,26 @@
+<assembly>
+<id>hdfs</id>
+<formats>
+    <format>dir</format>
+    <format>zip</format>
+</formats>
+<includeBaseDirectory>false</includeBaseDirectory>
+
+<fileSets>
+    <fileSet>
+        <directory>${basedir}/src/main/hdfs</directory>
+        <outputDirectory>hdfs/hdfs-${project.version}</outputDirectory>
+    </fileSet>
+</fileSets>
+    <files>
+        <file>
+            <source>src/main/common/config-default.xml</source>
+            <outputDirectory>hdfs/hdfs-${project.version}/apps/rainfall</outputDirectory>
+        </file>
+        <file>
+            <source>target/classes/VERSION.txt</source>
+            <outputDirectory>hdfs/hdfs-${project.version}</outputDirectory>
+        </file>
+    </files>
+
+</assembly>

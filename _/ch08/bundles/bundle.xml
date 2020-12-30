@@ -1,0 +1,63 @@
+<bundle-app name="Sample Bundle Example"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="uri:oozie:bundle:0.2">
+  <parameters>
+    <property>
+        <name>oozie.use.system.libpath</name>
+        <value>true</value>
+    </property>
+  </parameters>
+  <controls>
+     <kick-off-time>2015-03-11T15:22Z</kick-off-time>
+  </controls>
+  <coordinator name="Coordinator_Ch05_rainfall_v3">
+     <app-path>${nameNode}/user/hue/learn_oozie/ch05/rainfall/v3</app-path>
+     <configuration>
+       <property>
+          <name>wf_application_path</name>
+          <value>${nameNode}/user/hue/learn_oozie/ch05/rainfall/v3</value>
+      </property>
+      <property>
+          <name>data_definitions</name>
+          <value>${nameNode}/user/hue/learn_oozie/ch05/rainfall/datasets/datasets.xml</value>
+      </property>
+      <property>
+          <name>frequency</name>
+          <value>55 23 L * ?</value>
+      </property>
+      <property>
+          <name>execution_order</name>
+          <value>LAST_ONLY</value>
+      </property>
+      <property>
+          <name>start_date</name>
+          <value>${start_date_1}</value>
+      </property>
+      <property>
+          <name>end_date</name>
+          <value>${end_date_1}</value>
+     </property>
+    </configuration>
+  </coordinator>
+  <coordinator name="Coordinator_Ch05_rainfall_v2">
+     <app-path>${nameNode}/user/hue/learn_oozie/ch05/rainfall/v2</app-path>
+     <configuration>
+       <property>
+          <name>wf_application_path</name>
+          <value>${nameNode}/user/hue/learn_oozie/ch05/rainfall/v2</value>
+      </property>
+      <property>
+          <name>frequency</name>
+          <value>55 23 L * ?</value>
+      </property>
+      <property>
+          <name>start_date</name>
+          <value>${start_date_2}</value>
+      </property>
+      <property>
+          <name>end_date</name>
+          <value>${end_date_2}</value>
+     </property>
+    </configuration>
+  </coordinator>
+</bundle-app>

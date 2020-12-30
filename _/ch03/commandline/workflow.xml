@@ -1,0 +1,46 @@
+<workflow-app name="Pig_Replace_Delimiter" xmlns="uri:oozie:workflow:0.5">
+  
+    <start to="check-data"/>
+    
+    <decision name="check-data">
+        <switch>
+            <case to="replace-delimiter">
+              ${fs:dirSize("/user/hue/learn_oozie/ch03/input") gt 0 }
+            </case>
+            <default to="email-support"/>
+        </switch>
+    </decision>
+        
+    <action name="email-support">
+        <email xmlns="uri:oozie:email-action:0.1">
+            <to>bigdata@mysupport.com.fake</to>
+            <subject>No data today</subject>
+            <body>No data for job ${wf:name()} please check. Timestamp ${timestamp()}</body>
+        </email>
+        <ok to="End"/>
+        <error to="Kill"/>
+    </action>
+
+    <action name="replace-delimiter">
+        <pig>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <prepare>
+                  <delete path="${nameNode}/user/${wf:user()}/learn_oozie/ch03/output"/>
+            </prepare>
+            <script>/user/${wf:user()}/learn_oozie/ch03/pig/replace_delimiters.pig</script>
+              <param>inputPath=/user/${wf:user()}/learn_oozie/ch03/input/</param>
+              <param>outputPath=/user/${wf:user()}/learn_oozie/ch03/output</param>
+        </pig>
+        <ok to="End"/>
+        <error to="Kill"/>
+    </action>
+    
+    <kill name="Kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    
+    <end name="End"/>
+</workflow-app>
+
+

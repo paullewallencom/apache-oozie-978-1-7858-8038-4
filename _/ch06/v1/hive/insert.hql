@@ -1,0 +1,1 @@
+LOAD DATA INPATH '${hivevar:inputHive}' INTO TABLE ${hivevar:outputHiveTable};

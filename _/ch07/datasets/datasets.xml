@@ -1,0 +1,6 @@
+<datasets>
+  <dataset name="rainfall_partitioned" frequency="${coord:months(1)}" initial-instance="2015-01-01T00:00Z" timezone="Australia/Sydney">
+    <uri-template>hcat://${hcaturl}/default/ch07_v1_max_rainfall_trend/yearmonth=${YEAR}${MONTH}</uri-template>
+    <done-flag></done-flag>
+  </dataset>
+</datasets>

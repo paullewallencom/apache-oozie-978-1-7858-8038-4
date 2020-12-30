@@ -1,0 +1,10 @@
+<datasets>
+  <dataset name="pressrelease" frequency="${coord:days(1)}" initial-instance="2015-08-15T00:00Z" timezone="Australia/Sydney">
+    <uri-template>${nameNode}/user/hue/learn_oozie/ch04/input/pressrelease/${YEAR}/${MONTH}/${DAY}</uri-template>
+    <done-flag>_SUCCESS</done-flag>
+  </dataset>
+  <dataset name="wordcount" frequency="${coord:days(1)}" initial-instance="2015-08-15T00:00Z" timezone="Australia/Sydney">
+    <uri-template>${nameNode}/user/hue/learn_oozie/ch04/output/wordcount/${YEAR}/${MONTH}/${DAY}</uri-template>
+    <done-flag>_SUCCESS</done-flag>
+  </dataset>
+</datasets>

@@ -1,0 +1,39 @@
+<workflow-app name="Pig_Replace_Delimiter_Ch03" xmlns="uri:oozie:workflow:0.5">
+    <start to="decision-74b2"/>
+    <kill name="Kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <action name="email-0941">
+        <email xmlns="uri:oozie:email-action:0.1">
+            <to>bigdata@mysupport.com.fake</to>
+            <subject>No data today</subject>
+            <body>No data please check</body>
+        </email>
+        <ok to="End"/>
+        <error to="Kill"/>
+    </action>
+    <decision name="decision-74b2">
+        <switch>
+            <case to="pig-82df">
+              ${ fs:dirSize(&quot;/user/hue/learn_oozie/ch03/input&quot;) gt 0 }
+            </case>
+            <default to="email-0941"/>
+        </switch>
+    </decision>
+    <action name="pig-82df">
+        <pig>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <prepare>
+                  <delete path="${nameNode}/user/hue/learn_oozie/ch03/output"/>
+            </prepare>
+            <script>/user/hue/learn_oozie/ch03/pig/replace_delimiters.pig</script>
+              <param>inputPath=/user/hue/learn_oozie/ch03/input/</param>
+              <param>outputPath=/user/hue/learn_oozie/ch03/output</param>
+        </pig>
+        <ok to="End"/>
+        <error to="Kill"/>
+    </action>
+    <end name="End"/>
+</workflow-app>
+

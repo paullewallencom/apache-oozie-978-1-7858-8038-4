@@ -1,0 +1,25 @@
+<workflow-app name="max_rainfall" xmlns="uri:oozie:workflow:0.5">
+  
+    <start to="max_rainfall"/>
+    
+    <action name="max_rainfall">
+        <pig>
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <prepare>
+                  <delete path="${output}"/>
+            </prepare>
+              <script>/user/hue/learn_oozie/ch05/rainfall/pig/max_rain.pig</script>
+              <param>pig_input=${input}</param>
+              <param>pig_output=${output}</param>
+        </pig>
+        <ok to="End"/>
+        <error to="Kill"/>
+    </action>
+    
+    <kill name="Kill">
+        <message>Action failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    
+    <end name="End"/>
+</workflow-app>
